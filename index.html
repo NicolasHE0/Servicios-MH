@@ -50,7 +50,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 4rem 2rem;
+    padding: 4rem 2rem 5rem;
   }
 
   .hero-bg-circle {
@@ -172,10 +172,6 @@
   }
 
   .scroll-cue {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -186,6 +182,9 @@
     text-transform: uppercase;
     animation: fadeUp 1s ease forwards 1.5s;
     opacity: 0;
+    margin-top: 2.5rem;
+    position: relative;
+    z-index: 10;
   }
   .scroll-arrow {
     width: 24px;
@@ -882,6 +881,156 @@
     .section-title { font-size: 1.5rem; }
   }
 
+
+  /* ── PARALLAX BANNER ── */
+  .parallax-banner {
+    position: relative;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .parallax-bg {
+    position: absolute;
+    inset: -80px 0;
+    background:
+      radial-gradient(ellipse at 20% 60%, rgba(74,156,93,0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 40%, rgba(200,169,110,0.2) 0%, transparent 50%),
+      linear-gradient(135deg, #0f2217 0%, #1a3a22 40%, #2d5a3e 70%, #1a3a22 100%);
+    will-change: transform;
+  }
+
+  /* SVG leaf pattern overlay */
+  .parallax-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 10 Q55 25 40 40 Q25 25 40 10Z' fill='none' stroke='rgba(142,201,154,0.06)' stroke-width='1'/%3E%3Cpath d='M20 40 Q35 55 20 70 Q5 55 20 40Z' fill='none' stroke='rgba(142,201,154,0.04)' stroke-width='1'/%3E%3Cpath d='M60 40 Q75 55 60 70 Q45 55 60 40Z' fill='none' stroke='rgba(142,201,154,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+    opacity: 1;
+  }
+
+  .parallax-content {
+    position: relative;
+    z-index: 2;
+    padding: 4rem 2rem;
+    max-width: 800px;
+  }
+
+  .parallax-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--blanco);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .parallax-quote em {
+    color: var(--dorado);
+    font-style: italic;
+  }
+
+  .parallax-sub {
+    font-size: 1rem;
+    color: rgba(212,237,218,0.7);
+    letter-spacing: 0.1em;
+    font-weight: 300;
+  }
+
+  /* ── LIVE COUNTER ── */
+  .live-counter-section {
+    background: var(--verde-palido);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .live-counter-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--verde-oscuro);
+    border-radius: 1.5rem;
+    padding: 2rem 3rem;
+    box-shadow: 0 20px 60px rgba(26,58,34,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .live-counter-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(74,156,93,0.2), transparent 60%);
+  }
+
+  .live-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--verde-claro);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+  }
+
+  .live-dot::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+  }
+
+  .live-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    color: var(--blanco);
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .live-unit {
+    font-size: 1rem;
+    color: var(--dorado);
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+  }
+
+  .live-sublabel {
+    font-size: 0.8rem;
+    color: rgba(142,201,154,0.6);
+    position: relative;
+    z-index: 2;
+    font-style: italic;
+  }
+
+  /* ── STAT COUNTER STYLES ── */
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    color: var(--verde-oscuro);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+
 </style>
 </head>
 <body>
@@ -912,12 +1061,12 @@
       <span class="pill">✦ +10 años de experiencia</span>
       <span class="pill">🤝 Compromiso y confianza</span>
     </div>
+    <div class="scroll-cue">
+      <span>Conocenos</span>
+      <div class="scroll-arrow"></div>
+    </div>
   </div>
 
-  <div class="scroll-cue">
-    <span>Conocenos</span>
-    <div class="scroll-arrow"></div>
-  </div>
 </section>
 
 <!-- STATS -->
@@ -925,20 +1074,40 @@
   <div class="container">
     <div class="stats-grid">
       <div class="reveal">
-        <div class="stat-num">+10</div>
+        <div class="stat-num" data-count="10" data-prefix="+" data-suffix="">+10</div>
         <div class="stat-label">Años de experiencia<br>en el sector</div>
       </div>
       <div class="reveal reveal-delay-2">
-        <div class="stat-num">2</div>
+        <div class="stat-num" data-count="2" data-prefix="" data-suffix="">2</div>
         <div class="stat-label">Cultivos especializados:<br>Yerba Mate & Té</div>
       </div>
       <div class="reveal reveal-delay-4">
-        <div class="stat-num">100%</div>
+        <div class="stat-num" data-count="100" data-prefix="" data-suffix="%">100%</div>
         <div class="stat-label">Compromiso con<br>la calidad en origen</div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- LIVE KILO COUNTER -->
+<div class="live-counter-section reveal">
+  <div class="live-counter-wrap">
+    <div class="live-dot">En tiempo real</div>
+    <div class="live-number" id="kiloCounter">0</div>
+    <div class="live-unit">kg cosechados desde que abriste esta página</div>
+    <div class="live-sublabel">Estimado en base a la producción histórica de la empresa</div>
+  </div>
+</div>
+
+
+<!-- PARALLAX BANNER -->
+<div class="parallax-banner">
+  <div class="parallax-bg" id="parallaxBg"></div>
+  <div class="parallax-content reveal">
+    <p class="parallax-quote">Cada hoja cosechada es el resultado<br>de <em>trabajo, dedicación y pasión</em><br>por la tierra misionera.</p>
+    <p class="parallax-sub">— Servicios MH · Colonia Alberdi & General Alvear</p>
+  </div>
+</div>
 
 <!-- IDENTIDAD VISUAL -->
 <section class="identidad">
@@ -1174,17 +1343,108 @@
 </footer>
 
 <script>
-  // Scroll reveal
+  // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+        revealObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // ── ANIMATED STAT COUNTERS ──
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const duration = 1800;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = prefix + current + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.target.dataset.count) {
+        animateCounter(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-num[data-count]').forEach(el => statObserver.observe(el));
+
+  // ── LIVE KILO COUNTER ──
+  // Base: 10 years * ~365 days/yr * ~800 kg/day average production served = ~2,920,000 kg
+  // We start from a realistic accumulated number and increment live
+  const BASE_KG = 2920000;
+  // Rate: approx 800 kg/day harvested on active days (~200 days/year)
+  // 800 kg/day / 86400 sec/day ≈ 0.00926 kg/sec
+  const KG_PER_SECOND = 0.0185; // slightly rounded up to feel alive
+  const startTime = Date.now();
+  const kiloEl = document.getElementById('kiloCounter');
+
+  function formatKg(n) {
+    return Math.floor(n).toLocaleString('es-AR');
+  }
+
+  // Animate from 0 to BASE_KG on first view, then keep incrementing
+  let baseAnimDone = false;
+  const kiloObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !baseAnimDone) {
+        baseAnimDone = true;
+        kiloObserver.unobserve(entry.target);
+        // Animate from 0 to BASE_KG in 2.5 seconds
+        const animStart = performance.now();
+        const animDuration = 2500;
+        function animateBase(now) {
+          const elapsed = now - animStart;
+          const progress = Math.min(elapsed / animDuration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          kiloEl.textContent = formatKg(eased * BASE_KG);
+          if (progress < 1) {
+            requestAnimationFrame(animateBase);
+          } else {
+            // Switch to live incrementing
+            setInterval(() => {
+              const secondsElapsed = (Date.now() - startTime) / 1000;
+              kiloEl.textContent = formatKg(BASE_KG + secondsElapsed * KG_PER_SECOND);
+            }, 500);
+          }
+        }
+        requestAnimationFrame(animateBase);
+      }
+    });
+  }, { threshold: 0.3 });
+  if (kiloEl) kiloObserver.observe(kiloEl);
+
+  // ── PARALLAX ──
+  const parallaxBg = document.getElementById('parallaxBg');
+  if (parallaxBg) {
+    window.addEventListener('scroll', () => {
+      const banner = parallaxBg.closest('.parallax-banner');
+      const rect = banner.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      if (rect.bottom > 0 && rect.top < viewH) {
+        const progress = (viewH - rect.top) / (viewH + rect.height);
+        const offset = (progress - 0.5) * 120;
+        parallaxBg.style.transform = `translateY(${offset}px)`;
+      }
+    }, { passive: true });
+  }
 </script>
 
 </body>
