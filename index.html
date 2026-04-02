@@ -1031,6 +1031,45 @@
   }
 
 
+
+  .live-counter-label-top {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--verde-medio);
+    margin-bottom: 1.25rem;
+  }
+
+  .live-milestone {
+    font-size: 0.85rem;
+    color: var(--dorado);
+    font-style: italic;
+    min-height: 1.2em;
+    position: relative;
+    z-index: 2;
+    transition: opacity 0.4s;
+  }
+
+  .live-counter-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  .live-stat-chip {
+    background: var(--blanco);
+    border: 1px solid var(--verde-palido);
+    color: var(--verde-medio);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(26,58,34,0.06);
+  }
+
 </style>
 </head>
 <body>
@@ -1091,11 +1130,17 @@
 
 <!-- LIVE KILO COUNTER -->
 <div class="live-counter-section reveal">
+  <div class="live-counter-label-top">Producción acumulada · Servicios MH</div>
   <div class="live-counter-wrap">
-    <div class="live-dot">En tiempo real</div>
+    <div class="live-dot">Actualizando en vivo</div>
     <div class="live-number" id="kiloCounter">0</div>
-    <div class="live-unit">kg cosechados desde que abriste esta página</div>
-    <div class="live-sublabel">Estimado en base a la producción histórica de la empresa</div>
+    <div class="live-unit">kilogramos cosechados</div>
+    <div class="live-milestone" id="liveMilestone">&nbsp;</div>
+  </div>
+  <div class="live-counter-footer">
+    <span class="live-stat-chip">🌿 Yerba Mate</span>
+    <span class="live-stat-chip">🍃 Té</span>
+    <span class="live-stat-chip">📍 Misiones, Argentina</span>
   </div>
 </div>
 
@@ -1387,41 +1432,62 @@
   document.querySelectorAll('.stat-num[data-count]').forEach(el => statObserver.observe(el));
 
   // ── LIVE KILO COUNTER ──
-  // Base: 10 years * ~365 days/yr * ~800 kg/day average production served = ~2,920,000 kg
-  // We start from a realistic accumulated number and increment live
-  const BASE_KG = 2920000;
-  // Rate: approx 800 kg/day harvested on active days (~200 days/year)
-  // 800 kg/day / 86400 sec/day ≈ 0.00926 kg/sec
-  const KG_PER_SECOND = 0.0185; // slightly rounded up to feel alive
-  const startTime = Date.now();
+  const BASE_KG = 40000000; // 40 millones de kg acumulados
+  const KG_PER_SECOND = 0.5; // 1 kg cada 2 segundos
+  const liveStart = Date.now();
   const kiloEl = document.getElementById('kiloCounter');
+  const milestoneEl = document.getElementById('liveMilestone');
 
   function formatKg(n) {
     return Math.floor(n).toLocaleString('es-AR');
   }
 
-  // Animate from 0 to BASE_KG on first view, then keep incrementing
+  // Milestone messages shown when crossing round numbers
+  const milestones = [
+    { at: 40000010, msg: '🎉 ¡10 kg más desde que llegaste!' },
+    { at: 40000050, msg: '🌿 50 kg... ¡y sumando!' },
+    { at: 40000100, msg: '💪 100 kg cosechados en tu visita' },
+    { at: 40000500, msg: '🏆 ¡500 kg! El campo no para.' },
+  ];
+  let shownMilestones = new Set();
+
+  function checkMilestone(kg) {
+    milestones.forEach(m => {
+      if (kg >= m.at && !shownMilestones.has(m.at)) {
+        shownMilestones.add(m.at);
+        milestoneEl.style.opacity = '0';
+        setTimeout(() => {
+          milestoneEl.textContent = m.msg;
+          milestoneEl.style.opacity = '1';
+        }, 300);
+      }
+    });
+  }
+
   let baseAnimDone = false;
   const kiloObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !baseAnimDone) {
         baseAnimDone = true;
         kiloObserver.unobserve(entry.target);
-        // Animate from 0 to BASE_KG in 2.5 seconds
+        // Animate from 0 to BASE_KG in 3 seconds
         const animStart = performance.now();
-        const animDuration = 2500;
+        const animDuration = 3000;
         function animateBase(now) {
           const elapsed = now - animStart;
           const progress = Math.min(elapsed / animDuration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
+          const eased = 1 - Math.pow(1 - progress, 4);
           kiloEl.textContent = formatKg(eased * BASE_KG);
           if (progress < 1) {
             requestAnimationFrame(animateBase);
           } else {
-            // Switch to live incrementing
+            kiloEl.textContent = formatKg(BASE_KG);
+            // Switch to live ticking every 500ms
             setInterval(() => {
-              const secondsElapsed = (Date.now() - startTime) / 1000;
-              kiloEl.textContent = formatKg(BASE_KG + secondsElapsed * KG_PER_SECOND);
+              const elapsed = (Date.now() - liveStart) / 1000;
+              const current = BASE_KG + elapsed * KG_PER_SECOND;
+              kiloEl.textContent = formatKg(current);
+              checkMilestone(current);
             }, 500);
           }
         }
